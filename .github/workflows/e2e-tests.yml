@@ -35,7 +35,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Browser Lib Init
-      run: rfbrowser init
+      run: rfbrowser init --with-deps
 
     - name: Run WebApp
       run: npm start &
