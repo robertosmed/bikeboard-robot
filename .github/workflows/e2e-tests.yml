@@ -6,6 +6,10 @@ on:
         description: 'Escolha o navegador (chromium, firefox, webkit)'
         required: true
         default: 'chromium'
+      base_url:
+        description: 'Escolha o ambiente de teste(local, homolog, production)'
+        required: true
+        default: 'http://localhost:3000'
 jobs:
   test:
     timeout-minutes: 60
@@ -48,10 +52,10 @@ jobs:
         CI: true
 
     - name: Wait for WebApp
-      run: npx wait-on http://localhost:3000 --timeout 60000
+      run: npx wait-on ${{ github.event.inputs.base_url }} --timeout 60000
 
     - name: Run E2E Tests
-      run: robot -d ./logs -v BROWSER:${{ github.event.inputs.browser }} robot/tests
+      run: robot -d ./logs -v BROWSER:${{ github.event.inputs.browser }} -v BASE_URL:${{ github.event.inputs.base_url }} robot/tests
 
     - name: Publish Test Results
       uses: actions/upload-artifact@v4
